@@ -218,7 +218,3 @@ if selected == 'Parkinsons Prediction':
     except ValueError:
         st.error("Please enter valid numeric values.")
 
-if __name__ == '__main__':
-    import os
-    port = int(os.environ.get("PORT", 8501))
-    st.run(port=port)
