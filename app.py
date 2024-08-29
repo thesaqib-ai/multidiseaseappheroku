@@ -3,12 +3,9 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 
 # loading the saved models
-diabetes_model = pickle.load(open(
-    "diabetes_model.sav", 'rb'))
-parkinsons_model = pickle.load(open(
-    "parkinsons_model.sav", 'rb'))
-heart_model = pickle.load(open(
-    "heart_model.sav", 'rb'))
+diabetes_model = pickle.load(open("diabetes_model.sav", 'rb'))
+parkinsons_model = pickle.load(open("parkinsons_model.sav", 'rb'))
+heart_model = pickle.load(open("heart_model.sav", 'rb'))
 
 # sidebar for navigation
 with st.sidebar:
@@ -19,10 +16,10 @@ with st.sidebar:
                            icons=['activity', 'heart', 'person'],
                            default_index=0
                            )
-# diabetes prediction page
-if (selected == 'Diabetes Prediction'):
-    st.title('Diabetes Prediction using ML')
 
+# diabetes prediction page
+if selected == 'Diabetes Prediction':
+    st.title('Diabetes Prediction using ML')
     col1, col2, col3 = st.columns(3)
 
     with col1:
@@ -38,8 +35,7 @@ if (selected == 'Diabetes Prediction'):
     with col3:
         BMI = st.text_input('Body Mass Index (BMI)')
     with col1:
-        DiabetesPedigreeFunction = st.text_input(
-            'Diabetes Pedigree Function Value')
+        DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function Value')
     with col2:
         Age = st.text_input('Age')
 
@@ -57,9 +53,8 @@ if (selected == 'Diabetes Prediction'):
         Age = int(Age)
 
         if st.button('Diabetes Test Result'):
-            diabetes_diagnosis = diabetes_model.predict(
-                [[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
-            if (diabetes_diagnosis[0] == 1):
+            diabetes_diagnosis = diabetes_model.predict([[Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]])
+            if diabetes_diagnosis[0] == 1:
                 diabetes_diagnosis = 'The Person is Diabetic'
             else:
                 diabetes_diagnosis = 'The Person is not Diabetic'
@@ -69,9 +64,8 @@ if (selected == 'Diabetes Prediction'):
         st.error("Please enter valid numeric values.")
 
 # heart disease prediction page
-if (selected == 'Heart Disease Prediction'):
+if selected == 'Heart Disease Prediction':
     st.title('Heart Disease Prediction using ML')
-
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
@@ -121,7 +115,7 @@ if (selected == 'Heart Disease Prediction'):
 
         if st.button('Heart Test Result'):
             heart_diagnosis = heart_model.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
-            if (heart_diagnosis[0] == 1):
+            if heart_diagnosis[0] == 1:
                 heart_diagnosis = 'The Person has heart disease'
             else:
                 heart_diagnosis = 'The Person does not have heart disease'
@@ -131,9 +125,8 @@ if (selected == 'Heart Disease Prediction'):
         st.error("Please enter valid numeric values.")
 
 # parkinsons prediction page
-if(selected == 'Parkinsons Prediction'):
+if selected == 'Parkinsons Prediction':
     st.title('Parkinsons Prediction using ML')
-
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
@@ -215,7 +208,7 @@ if(selected == 'Parkinsons Prediction'):
         if st.button('Parkinsons Test Result'):
             parkinsons_diagnosis = parkinsons_model.predict([[MDVP_Fo_Hz, MDVP_Fhi_Hz, MDVP_Flo_Hz, MDVP_Jitter_percent, MDVP_Jitter_Abs, MDVP_RAP, MDVP_PPQ, Jitter_DDP, MDVP_Shimmer, MDVP_Shimmer_dB, Shimmer_APQ3, Shimmer_APQ5, MDVP_APQ, Shimmer_DDA, NHR, HNR, RPDE, DFA, spread1, spread2, D2, PPE]])
             
-            if (parkinsons_diagnosis[0] == 1):
+            if parkinsons_diagnosis[0] == 1:
                 parkinsons_diagnosis = 'The Person has Parkinsons disease'
             else:
                 parkinsons_diagnosis = 'The Person does not have Parkinsons disease'
@@ -224,3 +217,8 @@ if(selected == 'Parkinsons Prediction'):
 
     except ValueError:
         st.error("Please enter valid numeric values.")
+
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get("PORT", 8501))
+    st.run(port=port)
